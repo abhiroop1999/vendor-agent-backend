@@ -1,14 +1,8 @@
 import os
 import json
-from openai import OpenAI
+import openai
 
-# Don't create the client at module level - create it in the function
-def get_openai_client():
-    """Get OpenAI client with proper error handling"""
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY environment variable is not set")
-    return OpenAI(api_key=api_key)
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def score_vendors_with_ai(vendors, product, quantity, location):
     vendor_descriptions = "\n".join([
@@ -25,17 +19,13 @@ def score_vendors_with_ai(vendors, product, quantity, location):
     )
 
     try:
-        # Create client here, not at module level
-        client = get_openai_client()
-        
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7
         )
         content = response.choices[0].message.content.strip()
 
-        # Try to parse JSON safely
         start_index = content.find("[")
         end_index = content.rfind("]") + 1
         json_data = content[start_index:end_index]
