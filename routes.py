@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from models import VendorRequest
-from utils.vendor_agent import fetch_and_score_vendors
+from utils.vendor_agent import discover_and_score_vendors
 
 router = APIRouter()
 
