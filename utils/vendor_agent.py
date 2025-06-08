@@ -2,9 +2,12 @@ import os
 import json
 import openai
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
 def score_vendors_with_ai(vendors, product, quantity, location):
+    # Move API key setup inside function
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+    if not openai.api_key:
+        return [{"error": "OPENAI_API_KEY not found in environment variables"}]
+
     vendor_descriptions = "\n".join([
         f"{vendor['name']} - Based in {vendor['location']}"
         for vendor in vendors
@@ -25,11 +28,9 @@ def score_vendors_with_ai(vendors, product, quantity, location):
             temperature=0.7
         )
         content = response.choices[0].message.content.strip()
-
         start_index = content.find("[")
         end_index = content.rfind("]") + 1
         json_data = content[start_index:end_index]
-
         return json.loads(json_data)
     except Exception as e:
         return [{"error": f"AI scoring failed: {str(e)}"}]
