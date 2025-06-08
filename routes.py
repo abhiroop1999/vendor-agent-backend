@@ -4,6 +4,6 @@ from utils.vendor_agent import discover_and_score_vendors
 
 router = APIRouter()
 
-@router.post("/vendor-agent")
-def get_vendors(data: VendorRequest):
-    return {"results": fetch_and_score_vendors(data.product, data.quantity, data.location)}
+@app.post("/vendor-agent")
+def vendor_agent_endpoint(request: VendorAgentRequest):
+    return discover_and_score_vendors(request.product, request.quantity, request.location)
