@@ -1,12 +1,21 @@
 import os
 import json
-import openai
+import google.generativeai as genai
 
 def score_vendors_with_ai(vendors, product, quantity, location):
-    # Move API key setup inside function
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-    if not openai.api_key:
-        return [{"error": "OPENAI_API_KEY not found in environment variables"}]
+    # Get the API key from environment variables
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        return {"error": "GOOGLE_API_KEY not found in environment variables."}
+
+    try:
+        # Configure the generative AI client
+        genai.configure(api_key=api_key)
+    except Exception as e:
+        return {"error": f"Failed to configure Google AI: {str(e)}"}
+
+    # Create the model
+    model = genai.GenerativeModel('gemini-pro')
 
     vendor_descriptions = "\n".join([
         f"{vendor['name']} - Based in {vendor['location']}"
@@ -22,18 +31,23 @@ def score_vendors_with_ai(vendors, product, quantity, location):
     )
 
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7
-        )
-        content = response.choices[0].message.content.strip()
+        # Generate content
+        response = model.generate_content(prompt)
+        content = response.text.strip()
+
+        # Robust JSON parsing
         start_index = content.find("[")
         end_index = content.rfind("]") + 1
+        if start_index == -1 or end_index == 0:
+            return {"error": "AI response did not contain a valid JSON array.", "raw_response": content}
+        
         json_data = content[start_index:end_index]
         return json.loads(json_data)
+
+    except json.JSONDecodeError:
+        return {"error": "Failed to decode JSON from AI response.", "raw_response": content}
     except Exception as e:
-        return [{"error": f"AI scoring failed: {str(e)}"}]
+        return {"error": f"AI scoring failed: {str(e)}"}
 
 def discover_and_score_vendors(product, quantity, location):
     mock_vendors = [
