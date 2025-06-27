@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 logger.info("Loading environment variables...")
 load_dotenv()
 
-# Check for API key after loading
-api_key = os.getenv("OPENAI_API_KEY")
+# Check for the NEW Google API key after loading
+api_key = os.getenv("GOOGLE_API_KEY")
 if not api_key:
-    logger.error("OPENAI_API_KEY not found!")
+    logger.error("GOOGLE_API_KEY not found!")
 else:
-    logger.info("OPENAI_API_KEY loaded successfully.")
+    logger.info("GOOGLE_API_KEY loaded successfully.")
 
 app = FastAPI()
 
