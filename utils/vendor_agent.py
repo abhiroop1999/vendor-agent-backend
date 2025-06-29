@@ -4,12 +4,8 @@ import google.generativeai as genai
 
 def score_vendors_with_ai(vendors, product, quantity, location):
     # --- TEMPORARY DEBUGGING STEP ---
-    # We are hardcoding the key to test if the environment variable system is the issue.
-    # IMPORTANT: Replace the placeholder with your actual key.
-    api_key = "AIzaSyCO25tiGgjznyGDreS7qu2CwTCtU0tf_VY" 
-
-    if not api_key or api_key == "AIzaSyCO25tiGgjznyGDreS7qu2CwTCtU0tf_VY":
-        return {"error": "API Key is not set in the code. Please replace the placeholder."}
+    # The key is hardcoded directly.
+    api_key = "AIzaSyCO25tiGgjznyGDreS7qu2CwTCtU0tf_VY"
 
     try:
         # Configure the generative AI client
