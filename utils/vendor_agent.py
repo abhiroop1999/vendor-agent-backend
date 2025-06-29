@@ -3,9 +3,10 @@ import json
 import google.generativeai as genai
 
 def score_vendors_with_ai(vendors, product, quantity, location):
-    # --- TEMPORARY DEBUGGING STEP ---
-    # The key is hardcoded directly.
-    api_key = "AIzaSyCO25tiGgjznyGDreS7qu2CwTCtU0tf_VY"
+    # Securely get the API key from environment variables
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        return {"error": "SECURITY WARNING: GOOGLE_API_KEY not found in environment variables."}
 
     try:
         # Configure the generative AI client
@@ -13,7 +14,7 @@ def score_vendors_with_ai(vendors, product, quantity, location):
     except Exception as e:
         return {"error": f"Failed to configure Google AI: {str(e)}"}
 
-    # Create the model - UPDATED MODEL NAME
+    # Create the model
     model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
     vendor_descriptions = "\n".join([
