@@ -3,10 +3,13 @@ import json
 import google.generativeai as genai
 
 def score_vendors_with_ai(vendors, product, quantity, location):
-    # Get the API key from environment variables
-    api_key = os.getenv("GOOGLE_API_KEY")
-    if not api_key:
-        return {"error": "GOOGLE_API_KEY not found in environment variables."}
+    # --- TEMPORARY DEBUGGING STEP ---
+    # We are hardcoding the key to test if the environment variable system is the issue.
+    # IMPORTANT: Replace the placeholder with your actual key.
+    api_key = "AIzaSyCO25tiGgjznyGDreS7qu2CwTCtU0tf_VY" 
+
+    if not api_key or api_key == "AIzaSyCO25tiGgjznyGDreS7qu2CwTCtU0tf_VY":
+        return {"error": "API Key is not set in the code. Please replace the placeholder."}
 
     try:
         # Configure the generative AI client
