@@ -8,16 +8,8 @@ from routes import router
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Load environment variables first
-logger.info("Loading environment variables...")
+# Load environment variables (for local development)
 load_dotenv()
-
-# Check for the NEW Google API key after loading
-api_key = os.getenv("GOOGLE_API_KEY")
-if not api_key:
-    logger.error("GOOGLE_API_KEY not found!")
-else:
-    logger.info("GOOGLE_API_KEY loaded successfully.")
 
 app = FastAPI()
 
