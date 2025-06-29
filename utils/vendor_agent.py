@@ -13,8 +13,8 @@ def score_vendors_with_ai(vendors, product, quantity, location):
     except Exception as e:
         return {"error": f"Failed to configure Google AI: {str(e)}"}
 
-    # Create the model
-    model = genai.GenerativeModel('gemini-pro')
+    # Create the model - UPDATED MODEL NAME
+    model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
     vendor_descriptions = "\n".join([
         f"{vendor['name']} - Based in {vendor['location']}"
