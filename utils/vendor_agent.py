@@ -6,7 +6,7 @@ def score_vendors_with_ai(vendors, product, quantity, location):
     # Securely get the API key from environment variables
     api_key = os.getenv("GOOGLE_API_KEY")
     if not api_key:
-        return {"error": "SECURITY WARNING: GOOGLE_API_KEY not found in environment variables."}
+        return {"error": "SECURITY WARNING: GOOGLE_API_KEY not found in Vercel environment variables."}
 
     try:
         # Configure the generative AI client
