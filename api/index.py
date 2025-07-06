@@ -1,7 +1,11 @@
 # /api/index.py
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from fastapi import FastAPI
-from ..routes import router # Note the two dots to go up one directory
+from routes import router
 
 app = FastAPI()
 
